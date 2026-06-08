@@ -3,6 +3,7 @@ package com.example.projectf.di
 import android.content.Context
 import androidx.room.Room
 import com.example.projectf.data.local.AppDatabase
+import com.example.projectf.data.local.dao.ConsumedFoodDao
 import com.example.projectf.data.local.dao.FoodDao
 import com.example.projectf.data.remote.FoodApiService
 import dagger.Module
@@ -35,12 +36,20 @@ object AppModule {
             context,
             AppDatabase::class.java,
             "food_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
     @Singleton
     fun provideFoodDao(database: AppDatabase): FoodDao {
         return database.foodDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideConsumedFoodDao(database: AppDatabase): ConsumedFoodDao {
+        return database.consumedFoodDao
     }
 }

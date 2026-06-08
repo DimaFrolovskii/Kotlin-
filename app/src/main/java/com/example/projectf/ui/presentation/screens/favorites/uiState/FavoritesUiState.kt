@@ -5,5 +5,7 @@ import com.example.projectf.data.local.entity.FoodEntity
 
 data class FavoritesUiState(
     val isLoading: Boolean = false,
-    val favoriteFoods: List<FoodEntity> = emptyList()
+    val favoriteFoods: List<FoodEntity> = emptyList(),
+    val totalCalories: Int = 0,
+    val dailyGoal: Int = 2000
 )
