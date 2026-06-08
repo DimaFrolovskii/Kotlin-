@@ -26,16 +26,71 @@
 
 ---
 
-## Архитектура
+## Структура
 
 ```
-MVVM + Repository Pattern + Offline-First
-
-UI (Compose) ←→ ViewModel (StateFlow/UiState/UiEvent)
-                    ↓
-              Repository
-              ↙         ↘
-    Room (кэш)      Retrofit (API)
+ProjectF (root)
+├── gradle/
+│   └── libs.versions.toml          # Конфигурация зависимостей
+├── app/
+│   ├── src/
+│   │   └── main/
+│   │       ├── java/com/example/projectf/
+│   │       │   ├── data/           # Слой данных
+│   │       │   │   ├── local/      # Локальная БД (Room)
+│   │       │   │   │   ├── dao/
+│   │       │   │   │   │   └── FoodDao.kt
+│   │       │   │   │   ├── entity/
+│   │       │   │   │   │   └── FoodEntity.kt
+│   │       │   │   │   └── AppDatabase.kt
+│   │       │   │   ├── remote/     # Сетевые запросы (Retrofit)
+│   │       │   │   │   └── dto/
+│   │       │   │   │       └── FoodDto.kt
+│   │       │   │   ├── repository/ # Репозитории
+│   │       │   │   │   └── FoodRepository.kt
+│   │       │   │   └── SettingsDataStore.kt
+│   │       │   ├── di/             # Внедрение зависимостей (Hilt)
+│   │       │   │   └── AppModule.kt
+│   │       │   ├── ui/             # Пользовательский интерфейс
+│   │       │   │   ├── presentation/
+│   │       │   │   │   ├── navigation/ # Навигация (Compose)
+│   │       │   │   │   │   ├── NavGraph.kt
+│   │       │   │   │   │   └── Screen.kt
+│   │       │   │   │   └── screens/    # Экраны приложения
+│   │       │   │   │       ├── details/    # Экран деталей
+│   │       │   │   │       │   ├── uiEvent/
+│   │       │   │   │       │   ├── uiState/
+│   │       │   │   │       │   ├── DetailsScreen.kt
+│   │       │   │   │       │   └── DetailsViewModel.kt
+│   │       │   │   │       ├── favorites/  # Избранное
+│   │       │   │   │       │   ├── uiEvent/
+│   │       │   │   │       │   ├── uiState/
+│   │       │   │   │       │   ├── FavoritesScreen.kt
+│   │       │   │   │       │   └── FavoritesViewModel.kt
+│   │       │   │   │       ├── search/     # Поиск
+│   │       │   │   │       │   ├── uiEvent/
+│   │       │   │   │       │   ├── uiState/
+│   │       │   │   │       │   ├── SearchScreen.kt
+│   │       │   │   │       │   └── SearchViewModel.kt
+│   │       │   │   │       └── settings/   # Настройки
+│   │       │   │   │           ├── uiEvent/
+│   │       │   │   │           ├── uiState/
+│   │       │   │   │           ├── SettingsScreen.kt
+│   │       │   │   │           └── SettingsViewModel.kt
+│   │       │   │   └── theme/          # Темы, цвета, типографика
+│   │       │   │       ├── Color.kt
+│   │       │   │       ├── Theme.kt
+│   │       │   │       └── Type.kt
+│   │       │   ├── MainActivity.kt     # Главная Activity
+│   │       │   └── ProjectFApplication.kt # Класс Application для Hilt
+│   │       ├── res/                # Ресурсы (разметка, иконки, строки)
+│   │       └── AndroidManifest.xml
+│   ├── build.gradle.kts            # Конфигурация модуля app
+│   └── proguard-rules.pro
+├── build.gradle.kts                # Корневой build-файл
+├── settings.gradle.kts             # Настройки проекта
+├── gradle.properties               # Настройки Gradle
+├── gradlew / gradlew.bat           # Gradle wrapper
 ```
 
 ### Слои
@@ -99,10 +154,8 @@ UI (Compose) ←→ ViewModel (StateFlow/UiState/UiEvent)
 
 ---
 
-## Ключевые архитектурные решения
+## Автор
+### Фроловский Дмитрий Сергеевич
 
-- **`OnConflictStrategy.REPLACE`** в DAO — повторные запросы обновляют кэш
-- **Nullable id/name в DTO** — защита от краша при некорректных данных API
-- **`@Singleton` у Repository** — единый экземпляр, согласованный кэш
-- **`@HiltAndroidApp` в Application** — обязательная точка входа Hilt
-- **Flow из Room** — UI реактивно обновляется при изменении БД
+Проект был сделан в качетсве финальной работы по дисциплине KOTLIN
+
